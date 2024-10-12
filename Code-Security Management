@@ -1,1 +1,37 @@
+class SecurityManagement:
+    Initialize():
+        videoSurveillance = new VideoSurveillanceSystem()
+        alarmSystem = new AlarmSystem()
+
+    function monitorParkingLot():
+        while true:
+            if videoSurveillance.detectSuspiciousActivity():
+                alarmSystem.triggerAlarm()
+            sleep for a duration  // e.g., every 5 seconds
+
+class VideoSurveillanceSystem:
+    function detectSuspiciousActivity():
+        videoFeed = getRealTimeVideoStream()
+        if detectAbnormalActivity(videoFeed):
+            return true
+        else:
+            return false
+
+    function getRealTimeVideoStream():
+        // Implementation to get video stream from cameras
+        return videoFeed
+
+class AlarmSystem:
+    function triggerAlarm():
+        print("Alarm! Suspicious activity detected.")
+        sendNotificationToSecurity()
+
+    function sendNotificationToSecurity():
+        // Implementation of notification logic, like sending SMS, email, etc.
+        print("Security personnel notified.")
+
+
+// Example usage
+securityManagement = new SecurityManagement()
+securityManagement.monitorParkingLot()
 
