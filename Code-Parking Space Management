@@ -1,1 +1,44 @@
+class ParkingLot:
+    initialize(numSpaces):
+        spaces = array of size numSpaces initialized to "available"
+        reservedSpaces = empty list
 
+    function checkAvailability():
+        availableCount = count of "available" in spaces
+        return availableCount
+
+    function reserveSpace(userID):
+        if checkAvailability() > 0:
+            for index from 0 to length(spaces) - 1:
+                if spaces[index] == "available":
+                    spaces[index] = "reserved"
+                    reservedSpaces.append({"userID": userID, "spaceIndex": index})
+                    return index  // Return the index of the reserved space
+        else:
+            return -1  // No spaces available
+
+    function releaseSpace(spaceIndex):
+        if spaces[spaceIndex] == "reserved":
+            spaces[spaceIndex] = "available"
+            remove reservedSpaces where spaceIndex matches
+            return true
+        else:
+            return false  // Space is not reserved
+
+    function monitorSpaces():
+        while true:
+            print("Current Parking Status:")
+            for index from 0 to length(spaces) - 1:
+                print("Space " + index + ": " + spaces[index])
+            sleep for a certain interval  // e.g., every minute
+
+// Example usage
+parkingLot = new ParkingLot(10)
+userID = "user123"
+reservedIndex = parkingLot.reserveSpace(userID)
+if reservedIndex != -1:
+    print("Space reserved at index: " + reservedIndex)
+else:
+    print("No available spaces.")
+
+parkingLot.monitorSpaces()
