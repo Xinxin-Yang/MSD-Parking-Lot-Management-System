@@ -1,1 +1,47 @@
+Class ParkingLot:
+    Method __init__(hourly_rate):
+        Set hourly_rate to hourly_rate
 
+    Method calculate_fee(start_time, end_time):
+        Calculate duration = end_time - start_time
+        hours = duration's total seconds / 3600
+        fee = hours * hourly_rate
+        Return round(fee, 2)
+
+Class Payment:
+    Method __init__(amount):
+        Set amount to amount
+
+    Method pay_cash():
+        Print "Cash payment: " + amount + " dollars"
+        # Additional cash payment logic can be added here
+
+    Method pay_credit_card():
+        Print "Credit card payment: " + amount + " dollars"
+        # Additional credit card payment logic can be added here
+
+    Method pay_mobile():
+        Print "Mobile payment: " + amount + " dollars"
+        # Additional mobile payment logic can be added here
+
+Main function:
+    Create parking_lot instance with hourly_rate (e.g., 10 dollars)
+
+    Set start_time = October 12, 2024, 09:00
+    Set end_time = October 12, 2024, 10:30
+
+    Use parking_lot.calculate_fee(start_time, end_time) to calculate the fee
+    Print "Parking fee: " + fee + " dollars"
+
+    User input for payment method (1: Cash, 2: Credit Card, 3: Mobile Payment)
+    
+    Create payment instance with fee
+    
+    If user input == '1':
+        Call payment.pay_cash()
+    Else if user input == '2':
+        Call payment.pay_credit_card()
+    Else if user input == '3':
+        Call payment.pay_mobile()
+    Else:
+        Print "Invalid payment method"
