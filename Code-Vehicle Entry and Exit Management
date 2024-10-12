@@ -1,1 +1,82 @@
+// Define data structures
+struct Vehicle {
+    string licensePlate
+    datetime entryTime
+    datetime exitTime
+}
 
+// List to hold parked vehicles
+list<Vehicle> parkedVehicles
+
+// Function to recognize license plate automatically
+function recognizeLicensePlate() -> string {
+    // Simulate license plate recognition process
+    string licensePlate = scanLicensePlate() // Function that interfaces with license plate scanner
+    return licensePlate
+}
+
+// Function to manually input license plate
+function manualInputLicensePlate() -> string {
+    print("Please enter the license plate:")
+    string licensePlate = getUserInput() // Get user input
+    return licensePlate
+}
+
+// Function to record vehicle entry
+function recordEntry() {
+    // Choose method for entering license plate
+    print("Select method for entering license plate: 1. Auto 2. Manual")
+    int choice = getUserInput()
+
+    string licensePlate
+    if choice == 1 then
+        licensePlate = recognizeLicensePlate()
+    else if choice == 2 then
+        licensePlate = manualInputLicensePlate()
+    else
+        print("Invalid choice, please try again.")
+        return // Exit the function if invalid choice
+
+    // Record entry time
+    datetime entryTime = currentDatetime()
+    Vehicle newVehicle = Vehicle(licensePlate, entryTime, null)
+    parkedVehicles.append(newVehicle) // Add the vehicle to the list
+    print("Vehicle entered: " + licensePlate + " at " + entryTime)
+}
+
+// Function to record vehicle exit
+function recordExit() {
+    print("Please enter the license plate for exit:")
+    string licensePlate = getUserInput()
+    
+    // Find the vehicle in the parked vehicles list
+    for each vehicle in parkedVehicles do
+        if vehicle.licensePlate == licensePlate then
+            // Record exit time
+            vehicle.exitTime = currentDatetime()
+            print("Vehicle exited: " + licensePlate + " at " + vehicle.exitTime)
+            parkedVehicles.remove(vehicle) // Remove the vehicle from the list
+            return // Exit the function after processing
+    print("Vehicle with license plate " + licensePlate + " not found.")
+}
+
+// Main loop for managing parking
+function main() {
+    while true do
+        print("1. Record Entry")
+        print("2. Record Exit")
+        print("3. Exit System")
+        int option = getUserInput()
+        
+        if option == 1 then
+            recordEntry()
+        else if option == 2 then
+            recordExit()
+        else if option == 3 then
+            break // Exit the loop and end the program
+        else
+            print("Invalid option, please try again.")
+}
+
+// Start the parking management system
+main()
