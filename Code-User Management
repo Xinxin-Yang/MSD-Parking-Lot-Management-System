@@ -1,1 +1,110 @@
+// User Management System for Parking Offers
 
+// Define Membership Levels
+enum MembershipLevel {
+    BASIC,
+    PREMIUM,
+    VIP
+}
+
+// User structure to hold user information
+struct User {
+    String userId
+    String name
+    String email
+    MembershipLevel membershipLevel
+    List<ParkingSpace> reservedSpaces
+    Date expirationDate
+}
+
+// ParkingSpace structure to hold information about parking spaces
+struct ParkingSpace {
+    String spaceId
+    Boolean isAvailable
+    Date reservationDate
+}
+
+// List to hold all users in the system
+List<User> users
+
+// Function to add a new user
+function addUser(name, email, membershipLevel):
+    userId = generateUserId() // Generate a unique user ID
+    newUser = User(userId, name, email, membershipLevel, [], null)
+    users.append(newUser)
+    print("User added:", newUser)
+
+// Function to update user information
+function updateUser(userId, newName, newEmail, newMembershipLevel):
+    user = findUserById(userId)
+    if user is not null:
+        user.name = newName
+        user.email = newEmail
+        user.membershipLevel = newMembershipLevel
+        print("User updated:", user)
+    else:
+        print("User not found:", userId)
+
+// Function to inquire user information
+function inquireUser(userId):
+    user = findUserById(userId)
+    if user is not null:
+        return user
+    else:
+        print("User not found:", userId)
+        return null
+
+// Function to check available parking spaces
+function checkAvailableSpaces():
+    List<ParkingSpace> availableSpaces = []
+    foreach space in allParkingSpaces:
+        if space.isAvailable:
+            availableSpaces.append(space)
+    return availableSpaces
+
+// Function to reserve a parking space
+function reserveParkingSpace(userId, spaceId):
+    user = findUserById(userId)
+    space = findSpaceById(spaceId)
+    
+    if user is not null and space is not null and space.isAvailable:
+        space.isAvailable = false
+        space.reservationDate = getCurrentDate()
+        user.reservedSpaces.append(space)
+        print("Parking space reserved:", space)
+    else:
+        print("Reservation failed. User or space not found, or space is unavailable.")
+
+// Function to send notifications and reminders
+function sendNotifications():
+    foreach user in users:
+        if user.expirationDate is not null and isNearExpiration(user.expirationDate):
+            sendEmail(user.email, "Parking Expiration Reminder", 
+                      "Dear " + user.name + ", your parking reservation will expire soon.")
+
+        // Optionally, send updates about parking lot statuses
+        updateUserParkingStatus(user)
+
+// Helper function to check if the parking space is near expiration
+function isNearExpiration(expirationDate):
+    return (expirationDate - getCurrentDate()).days <= 3 // Notify 3 days before expiration
+
+// Function to provide real-time status updates for parking lots
+function updateUserParkingStatus(user):
+    foreach space in user.reservedSpaces:
+        currentStatus = checkSpaceStatus(space.spaceId)
+        print("Status update for space", space.spaceId, ":", currentStatus)
+
+// Main routine for user management
+function userManagement():
+    // Example usage
+    addUser("John Doe", "john@example.com", MembershipLevel.PREMIUM)
+    userId = "generatedUserId" // Assume a generated user ID
+    updateUser(userId, "John Smith", "johnsmith@example.com", MembershipLevel.VIP)
+    userInfo = inquireUser(userId)
+    availableSpaces = checkAvailableSpaces()
+    reserveParkingSpace(userId, availableSpaces[0].spaceId) // Reserve first available space
+    sendNotifications()
+
+// Execute the user management routine
+userManagement()
