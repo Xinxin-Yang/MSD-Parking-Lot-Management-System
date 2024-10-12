@@ -42,3 +42,4 @@ else:
     print("No available spaces.")
 
 parkingLot.monitorSpaces()
+
